@@ -11,8 +11,5 @@
   "routes": [
     { "src": "/_stcore/.*", "dest": "api/index.py" },
     { "src": "/(.*)", "dest": "api/index.py" }
-  ],
-  "env": {
-    "PYTHON_REQUIREMENTS_FILE": "requirements-vercel.txt"
-  }
+  ]
 }
