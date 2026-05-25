@@ -1,0 +1,21 @@
+student_id,student_name,course,quiz_score,assignment_score,attendance_percentage,completion_percentage,study_hours,weak_topics,learning_speed,submission_delay_days
+STU1001,Alex Johnson,Mathematics,85,78,92,88,5.5,Algebra,medium,1
+STU1002,Sam Taylor,Physics,72,65,78,70,4.2,Mechanics,slow,2
+STU1003,Taylor Williams,Chemistry,91,85,96,92,6.8,Organic Chemistry,fast,0
+STU1004,Jordan Brown,Biology,68,72,85,80,3.9,Genetics,medium,3
+STU1005,Casey Jones,History,75,68,70,65,2.8,World War II,slow,4
+STU1006,Riley Garcia,English,88,92,85,90,5.2,Shakespeare,medium,1
+STU1007,Quinn Miller,Computer Science,92,95,88,85,7.5,Data Structures,fast,0
+STU1008,Avery Davis,Machine Learning,87,84,82,78,6.1,Algorithms,medium,2
+STU1009,Peyton Rodriguez,Mathematics,58,52,60,55,2.1,Algebra,slow,5
+STU1010,Morgan Martinez,Physics,82,75,88,82,4.5,Thermodynamics,medium,1
+STU1011,Alex Lee,Mathematics,95,90,95,93,8.2,Calculus,fast,0
+STU1012,Sam Chen,Physics,67,61,72,68,3.2,Mechanics,medium,3
+STU1013,Taylor Wang,Chemistry,73,68,80,75,4.1,Organic Chemistry,slow,2
+STU1014,Wilson Davis,Biology,88,92,90,88,6.5,Genetics,fast,0
+STU1015,Jessica Taylor,History,70,65,65,60,2.5,World War II,medium,4
+STU1016,Chris Anderson,English,80,75,75,70,3.8,Shakespeare,medium,2
+STU1017,Pat Roberts,Computer Science,78,82,80,78,5.0,Python,medium,1
+STU1018,Jordan Lee,Machine Learning,90,87,85,82,6.0,Algorithms,medium,1
+STU1019,Taylor Smith,Mathematics,45,40,50,45,1.8,Algebra,slow,6
+STU1020,Casey Johnson,Physics,88,82,90,85,5.3,Thermodynamics,medium,0
