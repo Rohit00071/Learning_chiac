@@ -1,9 +1,17 @@
+import streamlit as st
 import os
-import sys
 from pathlib import Path
 
-_root = Path(__file__).parent
-os.chdir(str(_root))
-sys.path.insert(0, str(_root))
+root = Path(__file__).parent
+os.chdir(str(root))
 
-import dashboard.app
+st.set_page_config(
+    page_title="AI Learning Analytics Dashboard",
+    page_icon="🎓",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+from dashboard.main import run
+
+run()
