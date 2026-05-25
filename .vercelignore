@@ -1,0 +1,12 @@
+*.pyc
+__pycache__/
+*.log
+*.out.log
+*.err.log
+database/learning_analytics.db
+data/sample_learner_data.csv
+.git
+.gitignore
+README.md
+LAUNCH.md
+FINAL_SUMMARY.md
