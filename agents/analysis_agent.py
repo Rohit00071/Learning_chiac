@@ -1,8 +1,13 @@
 import pandas as pd
 import numpy as np
-from sklearn.cluster import KMeans
-from sklearn.preprocessing import StandardScaler
 from utils.logger import get_logger
+
+try:
+    from sklearn.cluster import KMeans
+    from sklearn.preprocessing import StandardScaler
+    SKLEARN_AVAILABLE = True
+except ImportError:
+    SKLEARN_AVAILABLE = False
 
 logger = get_logger(__name__)
 
@@ -163,21 +168,37 @@ class AnalysisAgent:
             return {}
 
         try:
-            # Prepare data
             X = self.data[available_features].fillna(self.data[available_features].median())
+            X_arr = X.values
+            n_samples = X_arr.shape[0]
 
-            # Standardize features
-            scaler = StandardScaler()
-            X_scaled = scaler.fit_transform(X)
+            if SKLEARN_AVAILABLE:
+                scaler = StandardScaler()
+                X_scaled = scaler.fit_transform(X_arr)
+                kmeans = KMeans(n_clusters=n_clusters, random_state=42, n_init=10)
+                cluster_labels = kmeans.fit_predict(X_scaled)
+                centroids = kmeans.cluster_centers_
+                inertia = kmeans.inertia_
+            else:
+                X_scaled = (X_arr - X_arr.mean(axis=0)) / (X_arr.std(axis=0) + 1e-10)
 
-            # Perform KMeans
-            kmeans = KMeans(n_clusters=n_clusters, random_state=42, n_init=10)
-            cluster_labels = kmeans.fit_predict(X_scaled)
+                rng = np.random.RandomState(42)
+                idx = rng.choice(n_samples, n_clusters, replace=False)
+                centroids = X_scaled[idx].copy()
 
-            # Add cluster labels to data
+                for _ in range(100):
+                    distances = np.linalg.norm(X_scaled[:, np.newaxis] - centroids, axis=2)
+                    labels = np.argmin(distances, axis=1)
+                    new_centroids = np.array([X_scaled[labels == i].mean(axis=0) for i in range(n_clusters)])
+                    if np.allclose(centroids, new_centroids):
+                        break
+                    centroids = new_centroids
+
+                cluster_labels = labels
+                inertia = sum(np.min(np.linalg.norm(X_scaled[:, np.newaxis] - centroids, axis=2), axis=1))
+
             self.data['cluster'] = cluster_labels
 
-            # Calculate cluster statistics
             cluster_stats = {}
             for i in range(n_clusters):
                 cluster_data = self.data[self.data['cluster'] == i]
@@ -192,15 +213,15 @@ class AnalysisAgent:
                 }
 
             results = {
-                'cluster_labels': cluster_labels.tolist(),
-                'cluster_centroids': kmeans.cluster_centers_.tolist(),
+                'cluster_labels': cluster_labels.tolist() if hasattr(cluster_labels, 'tolist') else list(cluster_labels),
+                'cluster_centroids': centroids.tolist() if hasattr(centroids, 'tolist') else centroids.tolist(),
                 'feature_names': available_features,
                 'cluster_statistics': cluster_stats,
-                'inertia': kmeans.inertia_
+                'inertia': float(inertia) if hasattr(inertia, 'item') else inertia
             }
 
             self.analysis_results['clustering'] = results
-            logger.info(f"Clustering completed. Inertia: {kmeans.inertia_:.2f}")
+            logger.info(f"Clustering completed. Inertia: {inertia:.2f}")
             return results
 
         except Exception as e:
